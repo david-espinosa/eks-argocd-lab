@@ -9,3 +9,9 @@ variable "project_name" {
   type        = string
   default     = "eks-espi-lab"
 }
+
+variable "enable_nat_gateway" {
+  description = "Create NAT Gateway for private node egress. Costs ~$0.045/hr when enabled."
+  type        = bool
+  default     = true
+}
