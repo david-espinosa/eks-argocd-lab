@@ -38,7 +38,7 @@ variable "enable_control_plane_logging" {
 variable "node_instance_types" {
   description = "EC2 Spot instance types for worker nodes"
   type        = list(string)
-  default     = ["t3.medium", "t3a.medium"]
+  default     = ["t3.medium", "t3.small"]
 }
 
 variable "node_min_size" {

@@ -38,3 +38,38 @@ resource "aws_eks_cluster" "main" {
     Name = var.project_name
   }
 }
+
+resource "aws_eks_node_group" "spot" {
+  cluster_name    = aws_eks_cluster.main.name
+  node_group_name = "${var.project_name}-spot"
+  node_role_arn   = aws_iam_role.node.arn
+  subnet_ids      = var.private_subnet_ids
+
+  capacity_type  = "SPOT"
+  instance_types = var.node_instance_types
+  disk_size      = var.node_disk_size_gb
+
+  scaling_config {
+    desired_size = var.node_desired_size
+    max_size     = var.node_max_size
+    min_size     = var.node_min_size
+  }
+
+  update_config {
+    max_unavailable = 1
+  }
+
+  depends_on = [
+    aws_iam_role_policy_attachment.node_eks_worker_policy,
+    aws_iam_role_policy_attachment.node_cni_policy,
+    aws_iam_role_policy_attachment.node_ecr_policy,
+  ]
+
+  lifecycle {
+    ignore_changes = [scaling_config[0].desired_size]
+  }
+
+  tags = {
+    Name = "${var.project_name}-spot-nodes"
+  }
+}
