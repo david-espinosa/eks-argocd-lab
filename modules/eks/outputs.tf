@@ -38,3 +38,8 @@ output "kubeconfig_command" {
   description = "Run this after apply to configure kubectl"
   value       = "aws eks update-kubeconfig --region ${var.aws_region} --name ${aws_eks_cluster.main.name}"
 }
+
+output "lb_controller_role_arn" {
+  description = "IAM role ARN for AWS Load Balancer Controller — pass to Helm chart"
+  value       = aws_iam_role.lb_controller.arn
+}

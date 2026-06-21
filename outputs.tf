@@ -22,3 +22,7 @@ output "kubeconfig_command" {
   description = "Run this after apply to configure kubectl"
   value       = module.eks.kubeconfig_command
 }
+
+output "lb_controller_role_arn" {
+  value = module.eks.lb_controller_role_arn
+}
