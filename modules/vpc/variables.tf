@@ -2,6 +2,10 @@ variable "project_name" {
   type = string
 }
 
+variable "aws_region" {
+  type = string
+}
+
 variable "enable_nat_gateway" {
   type = bool
 }

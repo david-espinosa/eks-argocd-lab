@@ -4,7 +4,12 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.99.1"
+      version = "~> 6.0"
+    }
+
+    tls = {
+      source  = "hashicorp/tls"
+      version = "4.0"
     }
   }
 
@@ -12,6 +17,6 @@ terraform {
     bucket       = "eks-espi-lab-tfstate"
     key          = "eks-espi-lab/terraform.tfstate"
     region       = "eu-north-1"
-    use_lockfile = "true"
+    use_lockfile = true
   }
 }
