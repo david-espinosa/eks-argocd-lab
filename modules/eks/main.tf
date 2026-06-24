@@ -2,6 +2,7 @@ resource "aws_cloudwatch_log_group" "eks" {
   count             = var.enable_control_plane_logging ? 1 : 0
   name              = "/aws/eks/${var.project_name}/cluster"
   retention_in_days = var.log_retention_days
+  skip_destroy = false
 
   tags = {
     Name = "${var.project_name}-control-plane-logs"
