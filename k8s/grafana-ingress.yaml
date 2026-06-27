@@ -4,7 +4,6 @@ metadata:
   name: grafana
   namespace: monitoring
   annotations:
-    kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/inbound-cidrs: 0.0.0.0/0
@@ -14,6 +13,7 @@ metadata:
     alb.ingress.kubernetes.io/certificate-arn: ${CERTIFICATE_ARN}
     alb.ingress.kubernetes.io/group.name: eks-lab
 spec:
+  ingressClassName: alb
   rules:
     - host: grafana.espi.click
       http:
