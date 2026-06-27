@@ -19,6 +19,7 @@ echo "⚙️  Installing AWS Load Balancer Controller..."
 helm repo add eks https://aws.github.io/eks-charts 2>/dev/null || true
 helm repo update
 
+
 helm upgrade --install aws-load-balancer-controller eks/aws-load-balancer-controller \
   -n kube-system \
   --set clusterName="$(terraform output -raw cluster_name)" \
@@ -28,6 +29,18 @@ helm upgrade --install aws-load-balancer-controller eks/aws-load-balancer-contro
   --set region="$(terraform output -raw region)" \
   --set vpcId="$(terraform output -raw vpc_id)"
 
+
+echo "⚙️  Installing Prometheus"
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+
+helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack \
+  -n monitoring \
+  --create-namespace \
+  --set grafana.adminPassword=admin \
+  --set prometheus.prometheusSpec.retention=1d \
+  --set alertmanager.enabled=true
+
 # ─── WAIT FOR CONTROLLER ───────────────────────────────
 echo "⏳ Waiting for Load Balancer Controller to be ready..."
 kubectl rollout status deployment/aws-load-balancer-controller \
@@ -36,11 +49,11 @@ kubectl rollout status deployment/aws-load-balancer-controller \
 
 # ─── APP ───────────────────────────────────────────────
 echo "🐳 Deploying hello-eks-nodejs app..."
-kubectl apply -f ../hello-eks-nodejs/k8s/deployment.yaml
-kubectl apply -f ../hello-eks-nodejs/k8s/service.yaml
+kubectl apply -f k8s/deployment.yaml
+kubectl apply -f k8s/service.yaml
 
 echo "🌐 Deploying ingress with TLS..."
-envsubst < ../hello-eks-nodejs/k8s/ingress.yaml | kubectl apply -f -
+envsubst < .k8s/ingress.yaml | kubectl apply -f -
 
 echo "✅ Done! Cluster is up."
 echo ""
