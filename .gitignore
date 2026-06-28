@@ -9,3 +9,5 @@ crash.*.log
 override.tf
 override.tf.json
 /.local/
+/destroy.sh
+/deploy.sh

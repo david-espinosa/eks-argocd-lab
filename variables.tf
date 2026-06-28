@@ -26,7 +26,7 @@ variable "cluster_version" {
 variable "allowed_cidr_blocks" {
   description = "CIDRs allowed to reach the EKS public API endpoint"
   type        = list(string)
-  default     = ["109.111.113.239/32"]
+  default     = ["0.0.0.0/0"]
 }
 
 variable "enable_control_plane_logging" {
