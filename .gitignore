@@ -11,3 +11,5 @@ override.tf.json
 /.local/
 /destroy.sh
 /deploy.sh
+/deploy-elk.sh
+/clean-elk.sh
